@@ -1,18 +1,24 @@
-# Define server logic required to draw a histogram
 server <- function(input, output) {
   
-  output$contents <- renderTable({
-    # input$file1 will be NULL initially. After the user selects
-    # and uploads a file, it will be a data frame with 'name',
-    # 'size', 'type', and 'datapath' columns. The 'datapath'
-    # column will contain the local filenames where the data can
-    # be found.
+  #### Data ####
+  
+  output$contents <- renderDataTable({
     inFile <- input$file1
     
     if (is.null(inFile))
       return(NULL)
     
-    read.csv(inFile$datapath, header = input$header)
+    this_df <<- read.csv(inFile$datapath)
+    this_df
+  })
+  
+  #### Analyse ####
+  
+  output$thisPlot <- renderPlotly({
+    this_df %>%
+      plot_ly(x = ~Date, type="candlestick",
+              open = ~Open, close = ~Close,
+              high = ~High, low = ~Low)
   })
   
 }

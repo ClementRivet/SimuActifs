@@ -3,7 +3,7 @@
 Voici un rapide dashboard pour ce cours, veuillez installer au préalable les library suivantes
 
 ```
-pkg <- c("shinydashboardPlus", "shinydashboard", "plotly", "shinyWidgets")
+pkg <- c("shinydashboardPlus", "shinydashboard", "plotly", "shinyWidgets", "DT")
 install.package(pkg, dependencies = T)
 ```
 
@@ -13,7 +13,7 @@ Ensuite pour run l'application web, ouvrez soit le fichier `ui.R` ou `server.R`
 
 Vous devriez avoir le résultat qui suit : 
 
-
+![](./www/images/readme.png)
 
 Vous trouverez les fonctions dans le dossier R.
 
