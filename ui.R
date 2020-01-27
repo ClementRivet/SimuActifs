@@ -3,16 +3,19 @@ library(shinyWidgets)
 library(shinydashboard)
 library(shinydashboardPlus)
 library(DT)
-library(waiter)
+#library(waiter)
+library(shinycustomloader)
 
 ui <- dashboardPagePlus(
     skin = "black-light",
     md = T,
     header = dashboardHeaderPlus(
-        title = "Simulation de valeurs d'actifs"
+        title = "Simulation de valeurs d'actifs",
+        titleWidth = "300px"
     ),
     sidebar = dashboardSidebar(
         collapsed = T,
+        width = "300px",
         sidebarMenu(
             menuItem("Données", tabName = "df", icon = icon("fab fa-database")),
             menuItem("Analyse", tabName = "an", icon = icon("random")),
@@ -20,6 +23,10 @@ ui <- dashboardPagePlus(
         )
     ),
     body = dashboardBody(
+        use_hostess(), # include dependencies
+        hostess_loader("load", text_color = "black", center_page = TRUE),
+        
+        setShadow(class = "dropdown-menu"),
         tabItems(
             tabItem(
                 tabName = "df",
@@ -41,7 +48,12 @@ ui <- dashboardPagePlus(
             
             tabItem(
                 tabName = "an",
-                plotlyOutput('thisPlot', height = '500px')
+                withLoader(
+                    plotlyOutput('thisPlot', height = '500px'),
+                    type = "html",
+                    loader = "dnaspin"
+                )
+                
             ),
             
             tabItem(
