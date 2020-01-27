@@ -6,10 +6,10 @@ server <- function(input, output) {
     inFile <- input$file1
     
     if (is.null(inFile) || exists('this_df', envir=.GlobalEnv)){
-      this_df
+      my_raw_data
     } else {
-      this_df <<- read.csv(inFile$datapath)
-      this_df
+      my_raw_data <<- read.csv(inFile$datapath)
+      my_raw_data
       save.image()
     }
   })
