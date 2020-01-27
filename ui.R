@@ -1,13 +1,7 @@
-library(plotly)
-library(shinyWidgets)
-library(shinydashboard)
-library(shinydashboardPlus)
-library(DT)
-#library(waiter)
-library(shinycustomloader)
+source('global.R', encoding = 'UTF-8')
 
 ui <- dashboardPagePlus(
-    skin = "black-light",
+    skin = "black",
     md = T,
     header = dashboardHeaderPlus(
         title = "Simulation de valeurs d'actifs",
@@ -23,36 +17,54 @@ ui <- dashboardPagePlus(
         )
     ),
     body = dashboardBody(
-        use_hostess(), # include dependencies
-        hostess_loader("load", text_color = "black", center_page = TRUE),
         
         setShadow(class = "dropdown-menu"),
         tabItems(
             tabItem(
                 tabName = "df",
-                fluidRow(
+                fluidPage(
                     box(
                         width = 12,
-                        fileInput("file1", "Fichier csv",
-                                  buttonLabel = "Importer",
-                                  accept = c(
-                                      "text/csv",
-                                      "text/comma-separated-values",
-                                      ".csv")
-                        ),
-                        br(),
-                        dataTableOutput("contents")
-                    )
+                        height = '900px',
+                        fluidRow(
+                            box(
+                                width = 12,
+                                fileInput("file1", "Fichier csv",
+                                          buttonLabel = "Importer",
+                                          accept = c(
+                                              "text/csv",
+                                              "text/comma-separated-values",
+                                              ".csv")
+                                )
+                            ),
+                            tabBox(
+                                width = 12,
+                                height = "600px",
+                                
+                                tabPanel(
+                                    "Data frame",
+                                    width = 12,
+                                    dataTableOutput("contents")
+                                ),
+                                tabPanel(
+                                    "Graphique",
+                                    width = 12,
+                                    heigth = 'auto',
+                                    withLoader(
+                                        plotlyOutput('thisPlot', height = '500px'),
+                                        type = "html",
+                                        loader = "dnaspin"
+                                    )
+                                ) 
+                            )
+                        )  
+                    ) 
                 )
             ),
             
             tabItem(
                 tabName = "an",
-                withLoader(
-                    plotlyOutput('thisPlot', height = '500px'),
-                    type = "html",
-                    loader = "dnaspin"
-                )
+                
                 
             ),
             

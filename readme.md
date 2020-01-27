@@ -9,7 +9,7 @@ install.package(pkg, dependencies = T)
 
 Ouvrez le projet via le fichier `SimuActif.Rproj` 
 
-Ensuite pour run l'application web, ouvrez soit le fichier `ui.R` ou `server.R`
+Ensuite pour run l'application web, ouvrez soit le fichier `ui.R` ou `server.R` et cliquer sur le bouton `Run App` qui se trouve en haut à droite de la fenêtre.
 
 Vous devriez avoir le résultat qui suit : 
 
