@@ -18,7 +18,7 @@ server <- function(input, output, session) {
   
   #### Analyse ####
   
-  output$thisPlot <- renderPlotly({
+  output$rawData <- renderPlotly({
     
     if(exists('my_raw_data', envir=.GlobalEnv)){
       my_raw_data %>%
@@ -29,5 +29,12 @@ server <- function(input, output, session) {
       NULL
     }
   })
+  
+  #### Cours ####
+  
+  output$pdfview <- renderUI({
+      tags$iframe(style="height:580px; width:100%", src="pdf/1.SimVA_29Jan2019.pdf")
+  })
+
   
 }
