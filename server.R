@@ -5,7 +5,7 @@ server <- function(input, output) {
   output$contents <- renderDataTable({
     inFile <- input$file1
     
-    if (is.null(inFile) || exists('this_df', envir=.GlobalEnv)){
+    if (is.null(inFile) || exists('my_raw_data', envir=.GlobalEnv)){
       my_raw_data
     } else {
       my_raw_data <<- read.csv(inFile$datapath)
@@ -18,7 +18,7 @@ server <- function(input, output) {
   
   output$thisPlot <- renderPlotly({
     
-    if(exists('this_df', envir=.GlobalEnv)){
+    if(exists('my_raw_data', envir=.GlobalEnv)){
       this_df %>%
         plot_ly(x = ~Date, type="candlestick",
                 open = ~Open, close = ~Close,

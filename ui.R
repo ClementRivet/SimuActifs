@@ -63,7 +63,7 @@ ui <- dashboardPagePlus(
             ),
             
             tabItem(
-                tabName = "an",
+                tabName = "an"
                 
                 
             ),
