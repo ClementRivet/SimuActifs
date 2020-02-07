@@ -1,25 +1,27 @@
-server <- function(input, output) {
+server <- function(input, output, session) {
   
   #### Data ####
   
   output$contents <- renderDataTable({
     inFile <- input$file1
     
-    if (is.null(inFile) || exists('this_df', envir=.GlobalEnv)){
+    if (exists('my_raw_data', envir=.GlobalEnv)){
       my_raw_data
-    } else {
+    } else if(!is.null(inFile)){
       my_raw_data <<- read.csv(inFile$datapath)
       my_raw_data
       save.image()
+    } else {
+      NULL
     }
   })
   
   #### Analyse ####
   
-  output$thisPlot <- renderPlotly({
+  output$rawData <- renderPlotly({
     
-    if(exists('this_df', envir=.GlobalEnv)){
-      this_df %>%
+    if(exists('my_raw_data', envir=.GlobalEnv)){
+      my_raw_data %>%
         plot_ly(x = ~Date, type="candlestick",
                 open = ~Open, close = ~Close,
                 high = ~High, low = ~Low) 
@@ -27,5 +29,12 @@ server <- function(input, output) {
       NULL
     }
   })
+  
+  #### Cours ####
+  
+  output$pdfview <- renderUI({
+      tags$iframe(style="height:580px; width:100%", src="pdf/1.SimVA_29Jan2019.pdf")
+  })
+
   
 }

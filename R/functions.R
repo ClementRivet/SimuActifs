@@ -1,6 +1,11 @@
 # Liste des fonctions utilisé dans le dashboard
 
 
+trianing <- function(num_start, nb_sample, nb_sample_test){
+  num_last_train <- num_start + nb_sample_test - 1
+}
+
+
 Simu_Historique_unif <- function(num_start,num_sample_train,num_sample_test){
   
   num_last_train <- num_start + nb_sample_train - 1
@@ -90,4 +95,5 @@ Err_relative <- function(spot_pres,ref){
   return((spot_pres - ref)/spot_pres)
   
 }
+
 
