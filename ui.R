@@ -4,7 +4,25 @@ ui <- dashboardPagePlus(
     skin = "black",
     md = T,
     header = dashboardHeaderPlus(
-        title = "Simulation de valeurs d'actifs",
+        title = tagList(
+            tags$span(
+                class = "logo-mini", 
+                HTML('<style type="text/css">
+                                .roundedImage{
+                                    overflow:hidden;
+                                    -webkit-border-radius:50px;
+                                    -moz-border-radius:50px;
+                                    border-radius:50px;
+                                    width:100%;
+                                    height:100%;
+                                }
+                             </style>
+                             <div class="roundedImage">
+                               <center><img src="images/mask.png" width="100%"/></center>
+                             </div>')
+            ),
+            tags$span(class = "logo-lg", "Simulation de valeurs d'actifs")
+        ),
         titleWidth = "300px"
     ),
     sidebar = dashboardSidebar(
@@ -17,24 +35,44 @@ ui <- dashboardPagePlus(
         )
     ),
     body = dashboardBody(
-        
+        tags$head(
+            tags$link(rel = "icon", type = "image/x-icon", href = "images/mask.ico")
+        ),
         setShadow(class = "dropdown-menu"),
         tabItems(
             tabItem(
                 tabName = "df",
-                fluidPage(
+                fluidRow(
                     box(
                         width = 12,
-                        height = '900px',
+                        height = 'auto',
                         fluidRow(
                             box(
                                 width = 12,
-                                fileInput("file1", "Fichier csv",
-                                          buttonLabel = "Importer",
+                                fileInput("file1", h3("Fichier csv"),
+                                          buttonLabel = "Import Local",
                                           accept = c(
                                               "text/csv",
                                               "text/comma-separated-values",
                                               ".csv")
+                                ),
+                                br(),
+                                h3("Via Yahoo Finance"),
+                                fluidRow(
+                                    column(
+                                      width = 3,
+                                      pickerInput(
+                                          inputId = "urlName",
+                                          choices = c(CAC40 = "^FCHI", 
+                                                      EURUSD = "EURUSD=X"
+                                                    ),
+                                          selected = NULL
+                                      )
+                                    ),
+                                    column(
+                                      width = 3,
+                                      actionButton("urlImport", label = "Importation")
+                                    )
                                 )
                             ),
                             tabBox(

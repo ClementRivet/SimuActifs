@@ -5,5 +5,6 @@ library(shinydashboardPlus)
 library(DT)
 library(magrittr)
 library(shinycustomloader)
+library(rtsdata)
 
 source('R/functions.R', encoding = 'UTF-8')

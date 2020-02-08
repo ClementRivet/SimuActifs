@@ -1,27 +1,22 @@
 server <- function(input, output, session) {
   
-  #### Data ####
+  #### Local Data ####
   
-  output$contents <- renderDataTable({
+  my_raw_data <- reactive({
     inFile <- input$file1
-    
-    if (exists('my_raw_data', envir=.GlobalEnv)){
-      my_raw_data
-    } else if(!is.null(inFile)){
-      my_raw_data <<- read.csv(inFile$datapath)
-      my_raw_data
-      save.image()
-    } else {
-      NULL
-    }
+    if (!is.null(inFile)){
+      read.csv(inFile$datapath)
+    } 
   })
   
-  #### Analyse ####
+  output$contents <- renderDataTable({
+    my_raw_data()
+  })
   
   output$rawData <- renderPlotly({
-    
-    if(exists('my_raw_data', envir=.GlobalEnv)){
-      my_raw_data %>%
+    if(!is.null(my_raw_data())){
+      data <- my_raw_data()
+      data %>%
         plot_ly(x = ~Date, type="candlestick",
                 open = ~Open, close = ~Close,
                 high = ~High, low = ~Low) 
@@ -29,6 +24,34 @@ server <- function(input, output, session) {
       NULL
     }
   })
+  
+  #### Data Yahoo ####
+  
+  observeEvent(input$urlImport, {
+    urlName <- input$urlName
+    .GlobalEnv$yahoo_data <- new.env()
+    getSymbols(urlName, env = .GlobalEnv$yahoo_data , src = 'yahoo', verbose=TRUE)
+    .GlobalEnv$my_raw_data <- data.frame(date=index(.GlobalEnv$yahoo_data[[paste0(urlName)]]), coredata(.GlobalEnv$yahoo_data[[paste0(urlName)]]))
+    colnames(.GlobalEnv$my_raw_data) <- c("Date","Open","High","Low","Close","Volume","Adj Close")
+    
+    output$contents <- renderDataTable({
+      .GlobalEnv$my_raw_data
+    })
+    
+    output$rawData <- renderPlotly({
+      .GlobalEnv$my_raw_data %>%
+          plot_ly(x = ~Date, type="candlestick",
+                  open = ~Open, close = ~Close,
+                  high = ~High, low = ~Low) 
+    })
+    
+  })
+  
+  
+  
+  
+  
+  
   
   #### Cours ####
   
