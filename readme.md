@@ -13,7 +13,7 @@ Ensuite pour run l'application web, ouvrez soit le fichier `ui.R` ou `server.R` 
 
 Vous devriez avoir le résultat qui suit : 
 
-![](./www/images/readme.png)
+![Screenshot](./www/images/readme.png)
 
 Vous trouverez les fonctions dans le dossier R.
 
