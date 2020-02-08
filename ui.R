@@ -160,16 +160,16 @@ ui <- dashboardPagePlus(
                                   type = "html",
                                   loader = "dnaspin"
                               )
+                          )
+                      ),
+                      tabBox(
+                          width = 12,
+                          id = "tabset1", height = "250px",
+                          tabPanel("R",
+                                   uiOutput("r")
                           ),
-                          tabBox(
-                              width = 12,
-                              id = "tabset1", height = "250px",
-                              tabPanel("R",
-                                       uiOutput("r")
-                              ),
-                              tabPanel("Python", 
-                                       uiOutput("python")
-                              )
+                          tabPanel("Python", 
+                                   uiOutput("python")
                           )
                       )
                     ), 
