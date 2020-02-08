@@ -4,6 +4,8 @@ ui <- dashboardPagePlus(
     skin = "black",
     md = T,
     header = dashboardHeaderPlus(
+        enable_rightsidebar = TRUE,
+        rightSidebarIcon = "gears",
         title = tagList(
             tags$span(
                 class = "logo-mini", 
@@ -128,16 +130,16 @@ ui <- dashboardPagePlus(
                         ),
                         uiOutput("setting"),
                         br(),
-                        pickerInput(
-                            inputId = "ml",
-                            label = h4("Inclure du Machine Learnig"), 
-                            choices = c("Régression non Linéaire", 
-                                        "Régression Linéaire", 
-                                        "FFNN",
-                                        "K-Means"
-                                        ),
-                            selected = NULL
-                        ),
+                        # pickerInput(
+                        #     inputId = "ml",
+                        #     label = h4("Inclure du Machine Learning"), 
+                        #     choices = c("Régression non Linéaire", 
+                        #                 "Régression Linéaire", 
+                        #                 "FFNN",
+                        #                 "K-Means"
+                        #                 ),
+                        #     selected = NULL
+                        # ),
                         br(),
                         actionButton('analyse', 'Lancer analyse')
                         
@@ -193,6 +195,31 @@ ui <- dashboardPagePlus(
                     )
                 )
             )
+        )
+    ),
+    rightsidebar = rightSidebar(
+        background = "dark",
+        rightSidebarTabContent(
+            id = 1,
+            icon = "desktop",
+            title = "Tab 1",
+            active = TRUE,
+            sliderInput(
+                "obs",
+                "Number of observations:",
+                min = 0, max = 1000, value = 500
+            )
+        ),
+        rightSidebarTabContent(
+            id = 2,
+            title = "Tab 2",
+            textInput("caption", "Caption", "Data Summary")
+        ),
+        rightSidebarTabContent(
+            id = 3,
+            title = "Tab 3",
+            icon = "paint-brush",
+            numericInput("obs", "Observations:", 10, min = 1, max = 100)
         )
     ),
     title = "Simulation de valeurs d'actifs"
