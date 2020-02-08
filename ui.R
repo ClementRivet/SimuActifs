@@ -4,6 +4,7 @@ ui <- dashboardPagePlus(
     skin = "black",
     md = T,
     header = dashboardHeaderPlus(
+
         enable_rightsidebar = TRUE,
         rightSidebarIcon = "gears",
         title = tagList(
@@ -25,6 +26,9 @@ ui <- dashboardPagePlus(
             ),
             tags$span(class = "logo-lg", "Simulation de valeurs d'actifs")
         ),
+
+        title = "Simulation de valeurs d'actifs",
+
         titleWidth = "300px"
     ),
     sidebar = dashboardSidebar(
@@ -37,57 +41,25 @@ ui <- dashboardPagePlus(
         )
     ),
     body = dashboardBody(
-        tags$head(
-            tags$link(rel = "icon", type = "image/x-icon", href = "images/mask.ico")
-        ),
+        
         setShadow(class = "dropdown-menu"),
         tabItems(
             tabItem(
                 tabName = "df",
-                fluidRow(
+                fluidPage(
                     box(
                         width = 12,
-                        height = 'auto',
+                        height = '900px',
                         fluidRow(
                             box(
                                 width = 12,
-                                fileInput("file1", h3("Fichier csv"),
-                                          buttonLabel = "Import Local",
+                                fileInput("file1", "Fichier csv",
+                                          buttonLabel = "Importer",
                                           accept = c(
                                               "text/csv",
                                               "text/comma-separated-values",
                                               ".csv")
-                                ),
-                                br(),
-                                h3("Via Yahoo Finance"),
-                                fluidRow(
-                                    style="align-items: start; margin: 0px;",
-                                    column(
-                                        3,
-                                        offset = 1,
-                                        pickerInput(
-                                            inputId = "typeMarket",
-                                            label = NULL,
-                                            choices = c("Forex", "Indices", "Commodity"),
-                                            selected = NULL
-                                        )
-                                    ),
-                                    column(
-                                        3,
-                                        offset = 1,
-                                        uiOutput("selectMarket")
-                                    ),
-                                    column(
-                                        3,
-                                        offset = 1,
-                                        actionButton(
-                                            "urlImport", 
-                                            label = "Importation",
-                                            style = "padding-bottom: 7px; margin: 35px 0 0 0;"
-                                        )
-                                    )
                                 )
-                                
                             ),
                             tabBox(
                                 width = 12,
@@ -118,7 +90,6 @@ ui <- dashboardPagePlus(
                 tabName = "an",
                 
                 sidebarLayout(
-                    
                     sidebarPanel(
                         width = 3,
                         h2("Paramétrages"),
@@ -141,7 +112,15 @@ ui <- dashboardPagePlus(
                         #     selected = NULL
                         # ),
                         br(),
-                        actionButton('analyse', 'Lancer analyse')
+                        pickerInput(
+                            inputId = "lang",
+                            label = h4("Langage de programmation"), 
+                            choices = c("R", 
+                                        "Python"
+                                        ),
+                            selected = NULL
+                        )
+                       
                         
                     ),
                     mainPanel(
@@ -154,17 +133,11 @@ ui <- dashboardPagePlus(
                                   type = "html",
                                   loader = "dnaspin"
                               )
-                          ) 
-                      ),
-                      tabBox(
-                          width = 12,
-                          id = "tabset1", height = "250px",
-                          tabPanel("R",
-                                   uiOutput("r")
-                                   ),
-                          tabPanel("Python", 
-                                   uiOutput("python")
-                                   )
+                          ),
+                          fluidRow(
+                            
+                              
+                          )  
                       )
                     ), 
                     position = "left",
