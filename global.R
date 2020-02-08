@@ -6,6 +6,7 @@ library(DT)
 library(magrittr)
 library(shinycustomloader)
 library(rtsdata)
+
 # library(rvest)
 # 
 # 
@@ -70,6 +71,5 @@ list_commodity <- c("Gold future" = "GC=F",
 source('R/functions.R', encoding = 'UTF-8')
 
         
-
 
                     

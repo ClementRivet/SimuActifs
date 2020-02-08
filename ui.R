@@ -4,7 +4,31 @@ ui <- dashboardPagePlus(
     skin = "black",
     md = T,
     header = dashboardHeaderPlus(
+
+        enable_rightsidebar = TRUE,
+        rightSidebarIcon = "gears",
+        title = tagList(
+            tags$span(
+                class = "logo-mini", 
+                HTML('<style type="text/css">
+                                .roundedImage{
+                                    overflow:hidden;
+                                    -webkit-border-radius:50px;
+                                    -moz-border-radius:50px;
+                                    border-radius:50px;
+                                    width:100%;
+                                    height:100%;
+                                }
+                             </style>
+                             <div class="roundedImage">
+                               <center><img src="images/mask.png" width="100%"/></center>
+                             </div>')
+            ),
+            tags$span(class = "logo-lg", "Simulation de valeurs d'actifs")
+        ),
+
         title = "Simulation de valeurs d'actifs",
+
         titleWidth = "300px"
     ),
     sidebar = dashboardSidebar(
@@ -77,16 +101,16 @@ ui <- dashboardPagePlus(
                         ),
                         uiOutput("setting"),
                         br(),
-                        pickerInput(
-                            inputId = "ml",
-                            label = h4("Inclure du Machine Learnig"), 
-                            choices = c("Régression non Linéaire", 
-                                        "Régression Linéaire", 
-                                        "FFNN",
-                                        "K-Means"
-                                        ),
-                            selected = NULL
-                        ),
+                        # pickerInput(
+                        #     inputId = "ml",
+                        #     label = h4("Inclure du Machine Learning"), 
+                        #     choices = c("Régression non Linéaire", 
+                        #                 "Régression Linéaire", 
+                        #                 "FFNN",
+                        #                 "K-Means"
+                        #                 ),
+                        #     selected = NULL
+                        # ),
                         br(),
                         pickerInput(
                             inputId = "lang",
@@ -144,6 +168,31 @@ ui <- dashboardPagePlus(
                     )
                 )
             )
+        )
+    ),
+    rightsidebar = rightSidebar(
+        background = "dark",
+        rightSidebarTabContent(
+            id = 1,
+            icon = "desktop",
+            title = "Tab 1",
+            active = TRUE,
+            sliderInput(
+                "obs",
+                "Number of observations:",
+                min = 0, max = 1000, value = 500
+            )
+        ),
+        rightSidebarTabContent(
+            id = 2,
+            title = "Tab 2",
+            textInput("caption", "Caption", "Data Summary")
+        ),
+        rightSidebarTabContent(
+            id = 3,
+            title = "Tab 3",
+            icon = "paint-brush",
+            numericInput("obs", "Observations:", 10, min = 1, max = 100)
         )
     ),
     title = "Simulation de valeurs d'actifs"
