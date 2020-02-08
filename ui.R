@@ -75,6 +75,7 @@ ui <- dashboardPagePlus(
                             choices = c("Monte-Carlo", "Historique", "Paramétrique"),
                             selected = NULL
                         ),
+                        uiOutput("setting"),
                         br(),
                         pickerInput(
                             inputId = "ml",
@@ -110,7 +111,7 @@ ui <- dashboardPagePlus(
                               )
                           ),
                           fluidRow(
-                            uiOutput("setting")
+                            
                               
                           )  
                       )
