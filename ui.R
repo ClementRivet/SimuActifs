@@ -95,6 +95,7 @@ ui <- dashboardPagePlus(
                                         ),
                             selected = NULL
                         )
+                       
                         
                     ),
                     mainPanel(
@@ -109,6 +110,7 @@ ui <- dashboardPagePlus(
                               )
                           ),
                           fluidRow(
+                            uiOutput("setting")
                               
                           )  
                       )
