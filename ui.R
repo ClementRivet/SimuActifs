@@ -26,9 +26,6 @@ ui <- dashboardPagePlus(
             ),
             tags$span(class = "logo-lg", "Simulation de valeurs d'actifs")
         ),
-
-        title = "Simulation de valeurs d'actifs",
-
         titleWidth = "300px"
     ),
     sidebar = dashboardSidebar(
@@ -49,7 +46,7 @@ ui <- dashboardPagePlus(
                 fluidPage(
                     box(
                         width = 12,
-                        height = '900px',
+                        height = 'auto',
                         fluidRow(
                             box(
                                 width = 12,
@@ -59,8 +56,38 @@ ui <- dashboardPagePlus(
                                               "text/csv",
                                               "text/comma-separated-values",
                                               ".csv")
+                                ),
+                                br(),
+                                h3("Via Yahoo Finance"),
+                                fluidRow(
+                                    style="align-items: start; margin: 0px;",
+                                    column(
+                                        3,
+                                        offset = 1,
+                                        pickerInput(
+                                            inputId = "typeMarket",
+                                            label = NULL,
+                                            choices = c("Forex", "Indices", "Commodity"),
+                                            selected = NULL
+                                        )
+                                    ),
+                                    column(
+                                        3,
+                                        offset = 1,
+                                        uiOutput("selectMarket")
+                                    ),
+                                    column(
+                                        3,
+                                        offset = 1,
+                                        actionButton(
+                                            "urlImport", 
+                                            label = "Importation",
+                                            style = "padding-bottom: 7px; margin: 35px 0 0 0;"
+                                        )
+                                    )
                                 )
                             ),
+                            
                             tabBox(
                                 width = 12,
                                 height = "600px",
@@ -134,10 +161,16 @@ ui <- dashboardPagePlus(
                                   loader = "dnaspin"
                               )
                           ),
-                          fluidRow(
-                            
-                              
-                          )  
+                          tabBox(
+                              width = 12,
+                              id = "tabset1", height = "250px",
+                              tabPanel("R",
+                                       uiOutput("r")
+                              ),
+                              tabPanel("Python", 
+                                       uiOutput("python")
+                              )
+                          )
                       )
                     ), 
                     position = "left",
