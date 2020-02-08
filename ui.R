@@ -62,18 +62,27 @@ ui <- dashboardPagePlus(
                                     style="align-items: start; margin: 0px;",
                                     column(
                                         3,
-                                        offset = 2,
-                                        selectInput(
-                                            inputId = "urlName",
+                                        offset = 1,
+                                        pickerInput(
+                                            inputId = "typeMarket",
                                             label = NULL,
-                                            choices = list_actifs,
+                                            choices = c("Forex", "Indices", "Commodity"),
                                             selected = NULL
                                         )
                                     ),
                                     column(
                                         3,
-                                        offset = 2,
-                                        actionButton("urlImport", label = "Importation")
+                                        offset = 1,
+                                        uiOutput("selectMarket")
+                                    ),
+                                    column(
+                                        3,
+                                        offset = 1,
+                                        actionButton(
+                                            "urlImport", 
+                                            label = "Importation",
+                                            style = "padding-bottom: 7px; margin: 35px 0 0 0;"
+                                        )
                                     )
                                 )
                                 
@@ -107,6 +116,7 @@ ui <- dashboardPagePlus(
                 tabName = "an",
                 
                 sidebarLayout(
+                    
                     sidebarPanel(
                         width = 3,
                         h2("Paramétrages"),
@@ -116,7 +126,6 @@ ui <- dashboardPagePlus(
                             choices = c("Monte-Carlo", "Historique", "Paramétrique"),
                             selected = NULL
                         ),
-                        br(),
                         uiOutput("setting"),
                         br(),
                         pickerInput(
@@ -130,14 +139,6 @@ ui <- dashboardPagePlus(
                             selected = NULL
                         ),
                         br(),
-                        pickerInput(
-                            inputId = "lang",
-                            label = h4("Langage de programmation"), 
-                            choices = c("R", 
-                                        "Python"
-                                        ),
-                            selected = NULL
-                        ),
                         actionButton('analyse', 'Lancer analyse')
                         
                     ),
@@ -151,10 +152,17 @@ ui <- dashboardPagePlus(
                                   type = "html",
                                   loader = "dnaspin"
                               )
-                          ),
-                          fluidRow(
-                              
-                          )  
+                          ) 
+                      ),
+                      tabBox(
+                          width = 12,
+                          id = "tabset1", height = "250px",
+                          tabPanel("R",
+                                   uiOutput("r")
+                                   ),
+                          tabPanel("Python", 
+                                   uiOutput("python")
+                                   )
                       )
                     ), 
                     position = "left",

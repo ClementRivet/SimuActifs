@@ -27,6 +27,15 @@ server <- function(input, output, session) {
   
   #### Data Yahoo ####
   
+  output$selectMarket <- renderUI({
+    pickerInput(
+      inputId = "urlName",
+      label = NULL,
+      choices = if (input$typeMarket == "Forex") list_forex else if (input$typeMarket == "Indices") list_indices,
+      selected = NULL
+    )
+  })
+  
   observeEvent(input$urlImport, {
     urlName <- input$urlName
     .GlobalEnv$yahoo_data <- new.env()
