@@ -1,3 +1,4 @@
+
 server <- function(input, output, session) {
   
   #### Local Data ####
@@ -83,5 +84,4 @@ server <- function(input, output, session) {
       tags$iframe(style="height:580px; width:100%", src="pdf/1.SimVA_29Jan2019.pdf")
   })
 
-  
-}
+

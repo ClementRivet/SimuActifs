@@ -190,7 +190,7 @@ ui <- dashboardPagePlus(
                     box(
                         height = "600px",
                         width = 12,
-                        uiOutput("pdfview"),
+                        uiOutput("pdfview")
                         #tags$iframe(style="height:600px; width:100%", src="http://localhost/ressources/pdf/1.SimVA_29Jan2019.pdf")
                     )
                 )
