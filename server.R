@@ -48,8 +48,23 @@ server <- function(input, output, session) {
   })
   
   
-  
-  
+  output$setting <- renderUI({
+    method <- input$method
+    my_raw_data <- .GlobalEnv$my_raw_data
+    if(!is.null(my_raw_data)){
+      nb_value <- nrow(my_raw_data)
+      switch(method,
+             "Historique" = {
+               tagList(
+                 numericInput("num_start","num_start",1,1,nb_value),
+                 numericInput("num_sample_train","num_sample_train",1,1,nb_value),
+                 numericInput("num_sample_test","num_sample_test",1,1,nb_value)
+               )},
+             "Monte-Carlo" = {NULL},
+             "Paramétrique" = {NULL}
+      )
+    }
+  })
   
   
   

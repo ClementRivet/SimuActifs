@@ -59,21 +59,24 @@ ui <- dashboardPagePlus(
                                 br(),
                                 h3("Via Yahoo Finance"),
                                 fluidRow(
+                                    style="align-items: start; margin: 0px;",
                                     column(
-                                      width = 3,
-                                      pickerInput(
-                                          inputId = "urlName",
-                                          choices = c(CAC40 = "^FCHI", 
-                                                      EURUSD = "EURUSD=X"
-                                                    ),
-                                          selected = NULL
-                                      )
+                                        3,
+                                        offset = 2,
+                                        selectInput(
+                                            inputId = "urlName",
+                                            label = NULL,
+                                            choices = list_actifs,
+                                            selected = NULL
+                                        )
                                     ),
                                     column(
-                                      width = 3,
-                                      actionButton("urlImport", label = "Importation")
+                                        3,
+                                        offset = 2,
+                                        actionButton("urlImport", label = "Importation")
                                     )
                                 )
+                                
                             ),
                             tabBox(
                                 width = 12,
@@ -114,6 +117,8 @@ ui <- dashboardPagePlus(
                             selected = NULL
                         ),
                         br(),
+                        uiOutput("setting"),
+                        br(),
                         pickerInput(
                             inputId = "ml",
                             label = h4("Inclure du Machine Learnig"), 
@@ -132,7 +137,8 @@ ui <- dashboardPagePlus(
                                         "Python"
                                         ),
                             selected = NULL
-                        )
+                        ),
+                        actionButton('analyse', 'Lancer analyse')
                         
                     ),
                     mainPanel(
