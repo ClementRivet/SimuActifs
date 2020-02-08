@@ -6,12 +6,12 @@ library(DT)
 library(magrittr)
 library(shinycustomloader)
 library(rtsdata)
-library(rvest)
-
-
-yahoo_table <- read_html('https://fr.finance.yahoo.com/indices-mondiaux') %>%
-  html_node("table") %>%
-  html_table()
+# library(rvest)
+# 
+# 
+# yahoo_table <- read_html('https://fr.finance.yahoo.com/indices-mondiaux') %>%
+#   html_node("table") %>%
+#   html_table()
 
 
 
