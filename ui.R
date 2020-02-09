@@ -27,7 +27,7 @@ ui <- dashboardPagePlus(
             tags$span(class = "logo-lg", "Simulation de valeurs d'actifs")
         ),
 
-        title = "Simulation de valeurs d'actifs",
+        
 
         titleWidth = "300px"
     ),
