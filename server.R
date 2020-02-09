@@ -1,5 +1,5 @@
 server <- function(input, output, session) {
-  
+
   #### Local Data ####
   
   my_raw_data <- reactive({
@@ -31,7 +31,14 @@ server <- function(input, output, session) {
     pickerInput(
       inputId = "urlName",
       label = NULL,
-      choices = if (input$typeMarket == "Forex") list_forex else if (input$typeMarket == "Indices") list_indices,
+      choices = {if (input$typeMarket == "Forex"){
+                    devisas
+                 } else if (input$typeMarket == "Indices") {
+                   `indices-mondiaux`
+                 } else if (input$typeMarket == "Commodity") {
+                   matierespremieres
+                 }
+        },
       selected = NULL
     )
   })
@@ -73,6 +80,17 @@ server <- function(input, output, session) {
              "Paramétrique" = {NULL}
       )
     }
+  })
+  
+  output$r <- renderUI({
+    method <- input$method
+    switch(method,
+           "Historique" = {
+             includeMarkdown('www/Rmd/histo.md')
+           },
+           "Monte-Carlo" = {NULL},
+           "Paramétrique" = {NULL}
+      )
   })
   
   
