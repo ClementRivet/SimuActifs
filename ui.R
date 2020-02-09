@@ -7,6 +7,7 @@ ui <- dashboardPagePlus(
 
         enable_rightsidebar = TRUE,
         rightSidebarIcon = "gears",
+<<<<<<< HEAD
         title = tagList(
             tags$span(
                 class = "logo-mini", 
@@ -29,6 +30,9 @@ ui <- dashboardPagePlus(
 
         
 
+=======
+        title = includeHTML('www/html/logo.html'),
+>>>>>>> 11dd15d7b5e7bfd86997c16c3f3fe6272d02b950
         titleWidth = "300px"
     ),
     sidebar = dashboardSidebar(
@@ -43,13 +47,41 @@ ui <- dashboardPagePlus(
     body = dashboardBody(
         
         setShadow(class = "dropdown-menu"),
+        tags$head(
+            tags$script('
+                  // Define function to set height of tabBox
+                  setHeight = function() {
+                    var window_height = $(window).height();
+                    var header_height = $(".main-header").height();
+                    var render_code_height = $(".wrapper").height();
+
+                    var fluid_page_height = window_height - header_height + render_code_height;
+
+                    $(".render_code").height(render_code_height);
+                  };
+
+                  // Set input$box_height when the connection is established
+                  $(document).on("shiny:connected", function(event) {
+                    setHeight();
+                  });
+
+                  // Refresh the box height on every window resize event
+                  $(window).on("resize", function(){
+                    setHeight();
+                  });
+
+                '),
+            tags$style('.nav.nav-tabs.nav-justified.control-sidebar-tabs{
+                            background: #ff0000;
+                       }'),
+        ),
         tabItems(
             tabItem(
                 tabName = "df",
                 fluidPage(
                     box(
                         width = 12,
-                        height = '900px',
+                        height = 'auto',
                         fluidRow(
                             box(
                                 width = 12,
@@ -59,8 +91,38 @@ ui <- dashboardPagePlus(
                                               "text/csv",
                                               "text/comma-separated-values",
                                               ".csv")
+                                ),
+                                br(),
+                                h3("Via Yahoo Finance"),
+                                fluidRow(
+                                    style="align-items: start; margin: 0px;",
+                                    column(
+                                        3,
+                                        offset = 1,
+                                        pickerInput(
+                                            inputId = "typeMarket",
+                                            label = NULL,
+                                            choices = c("Forex", "Indices", "Commodity"),
+                                            selected = NULL
+                                        )
+                                    ),
+                                    column(
+                                        3,
+                                        offset = 1,
+                                        uiOutput("selectMarket")
+                                    ),
+                                    column(
+                                        3,
+                                        offset = 1,
+                                        actionButton(
+                                            "urlImport", 
+                                            label = "Importation",
+                                            style = "padding-bottom: 7px; margin: 35px 0 0 0;"
+                                        )
+                                    )
                                 )
                             ),
+                            
                             tabBox(
                                 width = 12,
                                 height = "600px",
@@ -88,7 +150,7 @@ ui <- dashboardPagePlus(
             
             tabItem(
                 tabName = "an",
-                
+                class = "render_code",
                 sidebarLayout(
                     sidebarPanel(
                         width = 3,
@@ -110,21 +172,11 @@ ui <- dashboardPagePlus(
                         #                 "K-Means"
                         #                 ),
                         #     selected = NULL
-                        # ),
-                        br(),
-                        pickerInput(
-                            inputId = "lang",
-                            label = h4("Langage de programmation"), 
-                            choices = c("R", 
-                                        "Python"
-                                        ),
-                            selected = NULL
-                        )
-                       
-                        
+                        # )
                     ),
                     mainPanel(
                       width = 9,
+                      height = "auto",
                       box(
                           width = 12,
                           fluidRow(
@@ -133,11 +185,17 @@ ui <- dashboardPagePlus(
                                   type = "html",
                                   loader = "dnaspin"
                               )
+                          )
+                      ),
+                      tabBox(
+                          width = 12,
+                          id = "tabset1", height = "250px",
+                          tabPanel("R",
+                                   uiOutput("r")
                           ),
-                          fluidRow(
-                            
-                              
-                          )  
+                          tabPanel("Python", 
+                                   uiOutput("python")
+                          )
                       )
                     ), 
                     position = "left",
