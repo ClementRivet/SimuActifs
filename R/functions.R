@@ -6,6 +6,9 @@ trianing <- function(num_start, nb_sample, nb_sample_test){
 }
 
 Simu_Historique_unif <- function(num_start,nb_sample_train,nb_sample_test){
+  num_start=3500
+  nb_sample_train=600
+  nb_sample_test=10
   
   num_last_train <- num_start + nb_sample_train - 1
   num_start_test <- num_last_train + 1
@@ -14,7 +17,7 @@ Simu_Historique_unif <- function(num_start,nb_sample_train,nb_sample_test){
   
   if(!is.null(my_raw_data)){
     vec_price_close_row = rev(my_raw_data$"Adj Close")
- 
+    vec_price_close_row <- na.omit(vec_price_close_row)
   vec_price_all <- vec_price_close_row[num_start:num_last_test]
   vec_price_train<- vec_price_close_row[num_start:num_last_train]
   vec_price_test <- vec_price_close_row[num_start_test:num_last_test]
@@ -25,11 +28,29 @@ Simu_Historique_unif <- function(num_start,nb_sample_train,nb_sample_test){
   spot_next_actual <- vec_price_test[1]
   vec_spot_next_scen <- spot_pres*(1+vec_return_train)
 
+  # 
+  # spot_pred_prob_unif <- mean(vec_spot_next_scen)
+  # err_abs_prob_unif <- abs(spot_next_actual-spot_pred_prob_unif)
+  # err_rel_prob_unif <- err_abs_prob_unif/spot_pres
+  # err_rel_prob_unif_perc <- 100*err_rel_prob_unif
   
-  spot_pred_prob_unif <- mean(vec_spot_next_scen)
-  err_abs_prob_unif <- abs(spot_next_actual-spot_pred_prob_unif)
-  err_rel_prob_unif <- err_abs_prob_unif/spot_pres
-  err_rel_prob_unif_perc <- 100*err_rel_prob_unif
+  for( i in 1:nb_sample_test ){
+
+      spot_pres = vec_price_all[nb_sample_train+i-1]
+      spot_next_actual = vec_price_test[i]
+      vec_spot_next_scen = spot_pres*(1+vec_return_train)
+
+      spot_pred_prob_unif[i] = mean(vec_spot_next_scen)
+
+      err_abs_prob_unif[i] = abs(spot_next_actual-spot_pred_prob_unif)
+      err_rel_prob_unif[i] = err_abs_prob_unif/spot_pres
+      err_rel_prob_unif_perc[i] = 100*err_rel_prob_unif
+
+
+    }
+      err_abs_prob_unif = sum(abs(vec_price_test-spot_pred_prob_unif))
+      err_rel_prob_unif = err_abs_prob_unif/spot_pres
+      err_rel_prob_unif_perc = 100*err_rel_prob_unif
   
   #regarder ce qui est vraiment util de renvoyer 
   rslt <- list(vec_price_all,

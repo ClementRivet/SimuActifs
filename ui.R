@@ -172,7 +172,23 @@ ui <- dashboardPagePlus(
                                          type="html",
                                          loader="dnaspin")
                             )
+                          ),
+                          fluidRow(
+                            withLoader(
+                              plotlyOutput("rendePlot", height = "500px"),
+                              type="html",
+                              loader="dnaspin"
+                            )
+                          ),
+                          fluidRow(
+                            withLoader(
+                              plotlyOutput("Prediction", height = "500px"),
+                              type="html",
+                              loader="dnaspin"
+                            )
                           )
+                          
+                          
                       ),
                       tabBox(
                           width = 12,

@@ -111,11 +111,39 @@ server <- function(input, output, session) {
                  if(!is.null(.GlobalEnv$Resultas$res)){
                    data <- data.frame(.GlobalEnv$Resultas$res["vec_price_test"])
                    data %>% 
-                     plot_ly(y=~vec_price_test,type="scatter", mode="lines")
+                     plot_ly(y=~vec_price_test,type="scatter", mode="lines",color = "red")
                    
                  }
                  
                })
+               
+               output$rendePlot <- renderPlotly({
+                 
+                 if(!is.null(.GlobalEnv$Resultas$res)){
+                   data <- data.frame(.GlobalEnv$Resultas$res["vec_spot_next_scen"])
+                   data %>% 
+                     plot_ly(x=~vec_spot_next_scen,type="histogram")
+                   
+                 }
+                 
+               })
+               
+               output$Prediction <- renderPlotly({
+                 
+                 if(!is.null(.GlobalEnv$Resultas$res)){
+                   data <- data.frame(.GlobalEnv$Resultas$res["spot_pred_prob_unif"],.GlobalEnv$Resultas$res["vec_price_test"])
+                   data %>% 
+                     plot_ly(type="scatter", mode="lines")%>%
+                     add_trace(y=~spot_pred_prob_unif, name ="prediction", color="green")%>%
+                     add_trace(y=~vec_price_test, name="test", color="red")
+                     }
+                 
+               })
+               
+               
+               
+               
+               
             },
             "Glissante" = {})
       
@@ -134,9 +162,9 @@ server <- function(input, output, session) {
              "Historique" = {
                tagList(
                  
-                   numericInput("num_start","num_start",min = 1,max = nb_value,value=1),
-                   numericInput("num_sample_train","num_sample_train",min = 1,max = nb_value,value=1),
-                   numericInput("num_sample_test","num_sample_test",min = 1,max = nb_value,value=1)
+                   numericInput("num_start","num_start",min = 1,max = nb_value,value=3500),
+                   numericInput("num_sample_train","num_sample_train",min = 1,max = nb_value,value=600),
+                   numericInput("num_sample_test","num_sample_test",min = 1,max = nb_value,value=10)
                  
                )},
              "Monte-Carlo" = {NULL},
