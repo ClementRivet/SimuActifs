@@ -1,10 +1,28 @@
-# Liste des fonctions utilisé dans le dashboard
-
 #ajouter la selection du type de données entre yahoo ou my_raw_data
+#' Title
+#'
+#' @param num_start 
+#' @param nb_sample 
+#' @param nb_sample_test 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 trianing <- function(num_start, nb_sample, nb_sample_test){
   num_last_train <- num_start + nb_sample_test - 1
 }
 
+#' Title
+#'
+#' @param num_start 
+#' @param nb_sample_train 
+#' @param nb_sample_test 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 Simu_Historique_unif <- function(num_start,nb_sample_train,nb_sample_test){
   
   num_last_train <- num_start + nb_sample_train - 1
@@ -32,26 +50,37 @@ Simu_Historique_unif <- function(num_start,nb_sample_train,nb_sample_test){
   err_rel_prob_unif_perc <- 100*err_rel_prob_unif
   
   #regarder ce qui est vraiment util de renvoyer 
-  rslt <- list(vec_price_all,
-                     vec_price_train,
-                     vec_price_test,
-                     vec_spot_next_scen,
-                     spot_pred_prob_unif,
-                     err_abs_prob_unif,
-                     err_rel_prob_unif)
-  names(rslt) = c("vec_price_all",
-                  "vec_price_train",
-                  "vec_price_test",
-                  "vec_spot_next_scen",
-                  "spot_pred_prob_unif",
-                  "err_abs_prob_unif",
-                  "err_rel_prob_unif")
+  rslt <- list("vec_price_all"       = vec_price_all,
+               "vec_price_train"     = vec_price_train,
+               "vec_price_test"      = vec_price_test,
+               "vec_spot_next_scen"  = vec_spot_next_scen,
+               "spot_pred_prob_unif" = spot_pred_prob_unif,
+               "err_abs_prob_unif"   = err_abs_prob_unif,
+               "err_rel_prob_unif"   = err_rel_prob_unif)
+  # names(rslt) = c("vec_price_all",
+  #                 "vec_price_train",
+  #                 "vec_price_test",
+  #                 "vec_spot_next_scen",
+  #                 "spot_pred_prob_unif",
+  #                 "err_abs_prob_unif",
+  #                 "err_rel_prob_unif")
   return(rslt)
   }
   
 }
 
 
+#' Title
+#'
+#' @param window 
+#' @param num_start 
+#' @param num_sample_train 
+#' @param num_sample_test 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 Simu_Historique_MA <- function(window,num_start,num_sample_train,num_sample_test){
   
   num_last_train <- num_start + nb_sample_train - 1
@@ -94,14 +123,31 @@ Simu_Historique_MA <- function(window,num_start,num_sample_train,num_sample_test
     vec_dist_spot_scen_to_spot_ref,
     spot_pred_prob_ref
   )
-  
-  
 }
 
 
+#' Title
+#'
+#' @param spot_pres 
+#' @param ref 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 Err_absolu <- function(spot_pres,ref){
   return(abs(spot_pres-ref))
 }
+
+#' Title
+#'
+#' @param spot_pres 
+#' @param ref 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 Err_relative <- function(spot_pres,ref){
   return((spot_pres - ref)/spot_pres)
   

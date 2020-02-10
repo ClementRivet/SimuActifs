@@ -3,7 +3,7 @@
 Voici un rapide dashboard pour ce cours, veuillez installer au préalable les library suivantes
 
 ```
-pkg <- c("shinydashboardPlus", "shinydashboard", "plotly", "shinyWidgets", "DT", "shinycustomloader", "rtsdata")
+pkg <- c("shinydashboardPlus", "shinydashboard", "plotly", "shinyWidgets", "DT", "shinycustomloader", "rtsdata", "waiter")
 install.package(pkg, dependencies = T)
 ```
 

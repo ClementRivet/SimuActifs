@@ -22,7 +22,7 @@ ui <- dashboardPagePlus(
         )
     ),
     body = dashboardBody(
-        
+        use_waitress(),
         setShadow(class = "dropdown-menu"),
         tags$head(
             tags$script('
@@ -30,11 +30,11 @@ ui <- dashboardPagePlus(
                   setHeight = function() {
                     var window_height = $(window).height();
                     var header_height = $(".main-header").height();
-                    var render_code_height = $(".wrapper").height();
+                    var render_code_height = $(".tab-content").height();
 
-                    var fluid_page_height = window_height - header_height + render_code_height;
+                    var fluid_page_height = window_height - header_height + render_code_height - 250;
 
-                    $(".render_code").height(render_code_height);
+                    $(".render_code").height(fluid_page_height);
                   };
 
                   // Set input$box_height when the connection is established
@@ -49,7 +49,7 @@ ui <- dashboardPagePlus(
 
                 '),
             tags$style('.nav.nav-tabs.nav-justified.control-sidebar-tabs{
-                            background: #ff0000;
+                            background: #000000;
                        }')
         ),
         tabItems(
@@ -127,89 +127,83 @@ ui <- dashboardPagePlus(
             
             tabItem(
                 tabName = "an",
-                class = "render_code",
-                sidebarLayout(
-                    sidebarPanel(
-                        width = 3,
-                        h2("Paramétrages"),
-                        pickerInput(
-                            inputId = "method",
-                            label = h4("Méthode analyse"), 
-                            choices = c("Monte-Carlo", "Historique", "Paramétrique"),
-                            selected = NULL
-                        ),
-                        uiOutput("setting2"),
-                        br()
-                        # pickerInput(
-                        #     inputId = "ml",
-                        #     label = h4("Inclure du Machine Learning"), 
-                        #     choices = c("Régression non Linéaire", 
-                        #                 "Régression Linéaire", 
-                        #                 "FFNN",
-                        #                 "K-Means"
-                        #                 ),
-                        #     selected = NULL
-                        # )
-                    ),
-                    mainPanel(
-                      width = 9,
-                      height = "auto",
-                      box(
-                          width = 12,
-                          fluidRow(
-                            column(
-                              width = 6,
-                              withLoader(
-                                  plotlyOutput('trainPlot', height = '500px'),
-                                  type = "html",
-                                  loader = "dnaspin"
-                              )
+                div(
+                    class = "render_code", 
+                    sidebarLayout(
+                        sidebarPanel(
+                            width = 3,
+                            h2("Paramétrages"),
+                            h3("Vous avez importez :"),
+                            uiOutput('current_data'),
+                            pickerInput(
+                                inputId = "method",
+                                label = h4("Méthode d'analyse"), 
+                                choices = c("Monte-Carlo", "Historique", "Paramétrique"),
+                                selected = NULL
                             ),
-                            column(
-                              width = 6,
-                              withLoader(
-                                plotlyOutput('testPlot',height = '500px'),
-                                         type="html",
-                                         loader="dnaspin")
+                            uiOutput("setting2"),
+                            br()
+                            # pickerInput(
+                            #     inputId = "ml",
+                            #     label = h4("Inclure du Machine Learning"), 
+                            #     choices = c("Régression non Linéaire", 
+                            #                 "Régression Linéaire", 
+                            #                 "FFNN",
+                            #                 "K-Means"
+                            #                 ),
+                            #     selected = NULL
+                            # )
+                        ),
+                        mainPanel(
+                            width = 9,
+                            height = "auto",
+                            box(
+                                width = 12,
+                                fluidRow(
+                                    column(
+                                        width = 6,
+                                        withLoader(
+                                            plotlyOutput('trainPlot', height = '500px'),
+                                            type = "html",
+                                            loader = "dnaspin"
+                                        )
+                                    ),
+                                    column(
+                                        width = 6,
+                                        withLoader(
+                                            plotlyOutput('testPlot',height = '500px'),
+                                            type="html",
+                                            loader="dnaspin")
+                                    )
+                                )
                             )
-                          )
-                      ),
-                      tabBox(
-                          width = 12,
-                          id = "tabset1", height = "250px",
-                          tabPanel("R",
-                                   uiOutput("r")
-                          ),
-                          tabPanel("Python", 
-                                   uiOutput("python")
-                          )
-                      )
-                    ), 
-                    position = "left",
-                    fluid = TRUE
+                        ),
+                        position = "left",
+                        fluid = TRUE
+                    ),
+                    fluidRow(
+                        tabBox(
+                            width = 12,
+                            id = "tabset1", 
+                            height = "250px",
+                            tabPanel("R",
+                                     uiOutput("r")
+                            ),
+                            tabPanel("Python", 
+                                     uiOutput("python")
+                            )
+                        ) 
+                    )
                 )
             ),
             
             tabItem(
                 tabName = "cr",
-                # fluidRow(
-                #     box(
-                #         title = "Y'a un bug dans la matrice !",
-                #         height = "600px",
-                #         width = 12,
-                #         div(
-                #             style = "text-align: center; vertical-align: middle;",
-                #             img(style = "width: 80%", src = 'images/minions.jpg')
-                #         )
-                #         
-                #     )
-                # )
                 fluidRow(
                     box(
                         height = "600px",
                         width = 12,
                         uiOutput("pdfview")
-                        #tags$iframe(style="height:600px; width:100%", src="http://localhost/ressources/pdf/1.SimVA_29Jan2019.pdf")
                     )
                 )
             )
@@ -217,24 +211,31 @@ ui <- dashboardPagePlus(
     ),
     rightsidebar = rightSidebar(
         background = "dark",
-        rightSidebarTabContent(
-            id = 1,
-            icon = "desktop",
-            title = "Setting",
-            active = TRUE,
-            uiOutput("setting")
-        ),
-        rightSidebarTabContent(
-            id = 2,
-            title = "Tab 2",
-            textInput("caption", "Caption", "Data Summary")
-        ),
-        rightSidebarTabContent(
-            id = 3,
-            title = "Tab 3",
-            icon = "paint-brush",
-            numericInput("obs", "Observations:", 10, min = 1, max = 100)
-        )
+        .items = {
+            tagList(
+                h3('Setting'),
+                uiOutput("setting") 
+            )
+        }    
+        # rightSidebarTabContent(
+        #     id = "custum_setting",
+        #     header = NULL,
+        #     icon = NULL,
+        #     title = "Setting",
+        #     active = TRUE,
+        #     uiOutput("setting")
+        # )
+        # rightSidebarTabContent(
+        #     id = 2,
+        #     title = "Tab 2",
+        #     textInput("caption", "Caption", "Data Summary")
+        # ),
+        # rightSidebarTabContent(
+        #     id = 3,
+        #     title = "Tab 3",
+        #     icon = "paint-brush",
+        #     numericInput("obs", "Observations:", 10, min = 1, max = 100)
+        # )
     ),
     title = "Simulation de valeurs d'actifs"
 )

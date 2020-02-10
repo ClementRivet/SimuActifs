@@ -76,10 +76,18 @@ server <- function(input, output, session) {
                  selected = NULL),
                
                actionButton("Run_analysis","Analyser")
-             )})
-    
+             )}
+           )
   })
   
+  #https://loading.io/asset/340802 Pour rajouter un truc marrant
+  # output$trainPlot <- renderPlotly({
+  #   HTML("<img src='https://loading.io/asset/340802' />")
+  # })
+  # 
+  # output$testPlot <- renderPlotly({
+  #   HTML("<img src='https://loading.io/asset/340802' />")
+  # })
  
   observeEvent(input$Run_analysis,{
     .GlobalEnv$Resultas = new.env()
@@ -133,11 +141,9 @@ server <- function(input, output, session) {
       switch(method,
              "Historique" = {
                tagList(
-                 
                    numericInput("num_start","num_start",min = 1,max = nb_value,value=1),
                    numericInput("num_sample_train","num_sample_train",min = 1,max = nb_value,value=1),
                    numericInput("num_sample_test","num_sample_test",min = 1,max = nb_value,value=1)
-                 
                )},
              "Monte-Carlo" = {NULL},
              "Paramétrique" = {NULL}
@@ -153,9 +159,41 @@ server <- function(input, output, session) {
            "Historique" = {
              includeMarkdown('www/Rmd/histo.md')
            },
-           "Monte-Carlo" = {NULL},
-           "Paramétrique" = {NULL}
+           "Monte-Carlo" = {
+             div(
+               style = "text-align: center; vertical-align: middle;",
+               img(style = "width: 30%", src = 'images/minions.jpg')
+             )
+           },
+           "Paramétrique" = {
+             div(
+               style = "text-align: center; vertical-align: middle;",
+               img(style = "width: 30%", src = 'images/minions.jpg')
+             )
+           }
       )
+  })
+  
+  
+  output$python <- renderUI({
+    method <- input$method
+    switch(method,
+           "Historique" = {
+             includeMarkdown('www/Rmd/histo.md')
+           },
+           "Monte-Carlo" = {
+             div(
+               style = "text-align: center; vertical-align: middle;",
+               img(style = "width: 30%", src = 'images/minions.jpg')
+             )
+           },
+           "Paramétrique" = {
+             div(
+               style = "text-align: center; vertical-align: middle;",
+               img(style = "width: 30%", src = 'images/minions.jpg')
+             )
+           }
+    )
   })
   
   

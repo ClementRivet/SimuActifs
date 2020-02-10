@@ -7,6 +7,7 @@ library(magrittr)
 library(shinycustomloader)
 library(markdown)
 library(rtsdata)
+library(waiter)
 
 
 source('R/scrap_web.R', encoding = 'UTF-8')
