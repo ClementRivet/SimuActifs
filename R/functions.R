@@ -1,16 +1,20 @@
 # Liste des fonctions utilisé dans le dashboard
 
-
+#ajouter la selection du type de données entre yahoo ou my_raw_data
 trianing <- function(num_start, nb_sample, nb_sample_test){
   num_last_train <- num_start + nb_sample_test - 1
 }
 
-Simu_Historique_unif <- function(num_start,num_sample_train,num_sample_test){
+Simu_Historique_unif <- function(num_start,nb_sample_train,nb_sample_test){
   
   num_last_train <- num_start + nb_sample_train - 1
   num_start_test <- num_last_train + 1
   num_last_test <- num_start_test + nb_sample_test - 1
+  my_raw_data <- .GlobalEnv$my_raw_data
   
+  if(!is.null(my_raw_data)){
+    vec_price_close_row = rev(my_raw_data$"Adj Close")
+ 
   vec_price_all <- vec_price_close_row[num_start:num_last_test]
   vec_price_train<- vec_price_close_row[num_start:num_last_train]
   vec_price_test <- vec_price_close_row[num_start_test:num_last_test]
@@ -20,6 +24,7 @@ Simu_Historique_unif <- function(num_start,num_sample_train,num_sample_test){
   spot_pres <- vec_price_train[nb_sample_train]
   spot_next_actual <- vec_price_test[1]
   vec_spot_next_scen <- spot_pres*(1+vec_return_train)
+
   
   spot_pred_prob_unif <- mean(vec_spot_next_scen)
   err_abs_prob_unif <- abs(spot_next_actual-spot_pred_prob_unif)
@@ -27,16 +32,23 @@ Simu_Historique_unif <- function(num_start,num_sample_train,num_sample_test){
   err_rel_prob_unif_perc <- 100*err_rel_prob_unif
   
   #regarder ce qui est vraiment util de renvoyer 
-  rslt <- rbind(
-    vec_price_all,
-    vec_price_train,
-    vec_price_test,
-    vec_spot_next_scen,
-    spot_pred_prob_unif,
-    err_abs_prob_unif,
-    err_rel_prob_unif
-  )
+  rslt <- list(vec_price_all,
+                     vec_price_train,
+                     vec_price_test,
+                     vec_spot_next_scen,
+                     spot_pred_prob_unif,
+                     err_abs_prob_unif,
+                     err_rel_prob_unif)
+  names(rslt) = c("vec_price_all",
+                  "vec_price_train",
+                  "vec_price_test",
+                  "vec_spot_next_scen",
+                  "spot_pred_prob_unif",
+                  "err_abs_prob_unif",
+                  "err_rel_prob_unif")
   return(rslt)
+  }
+  
 }
 
 

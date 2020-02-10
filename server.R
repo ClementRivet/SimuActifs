@@ -64,6 +64,67 @@ server <- function(input, output, session) {
   })
   
   
+  output$setting2 <- renderUI({
+    method <- input$method
+    switch(method,
+           "Historique"= { 
+             tagList(
+               pickerInput(
+                 inputId = "method2",
+                 label = h4("type de moyenne"), 
+                 choices = c("uniforme", "Glissante"),
+                 selected = NULL),
+               
+               actionButton("Run_analysis","Analyser")
+             )})
+    
+  })
+  
+ 
+  observeEvent(input$Run_analysis,{
+    .GlobalEnv$Resultas = new.env()
+    
+    method2 <- input$method2
+    num_start <-input$num_start
+    num_sample_train <- input$num_sample_train
+    num_sample_test <- input$num_sample_test
+    if(!is.null(my_raw_data) & 
+       !is.null(num_start) & 
+       !is.null(num_sample_train) & 
+       !is.null(num_sample_test)){
+      switch(method2,
+            "uniforme" = {
+               .GlobalEnv$Resultas$res <- Simu_Historique_unif(num_start,num_sample_train,num_sample_test)
+               output$trainPlot <- renderPlotly({
+                 
+                 if(!is.null(.GlobalEnv$Resultas$res)){
+                   data <- data.frame(.GlobalEnv$Resultas$res["vec_price_train"])
+                   data %>% 
+                     plot_ly(y=~vec_price_train,type="scatter", mode="lines")
+                   
+                 }
+                 
+               })
+               
+               output$testPlot <- renderPlotly({
+                 
+                 if(!is.null(.GlobalEnv$Resultas$res)){
+                   data <- data.frame(.GlobalEnv$Resultas$res["vec_price_test"])
+                   data %>% 
+                     plot_ly(y=~vec_price_test,type="scatter", mode="lines")
+                   
+                 }
+                 
+               })
+            },
+            "Glissante" = {})
+      
+      
+    }
+    
+    
+  })
+  
   output$setting <- renderUI({
     method <- input$method
     my_raw_data <- .GlobalEnv$my_raw_data
@@ -72,15 +133,19 @@ server <- function(input, output, session) {
       switch(method,
              "Historique" = {
                tagList(
-                 numericInput("num_start","num_start",1,1,nb_value),
-                 numericInput("num_sample_train","num_sample_train",1,1,nb_value),
-                 numericInput("num_sample_test","num_sample_test",1,1,nb_value)
+                 
+                   numericInput("num_start","num_start",min = 1,max = nb_value,value=1),
+                   numericInput("num_sample_train","num_sample_train",min = 1,max = nb_value,value=1),
+                   numericInput("num_sample_test","num_sample_test",min = 1,max = nb_value,value=1)
+                 
                )},
              "Monte-Carlo" = {NULL},
              "Paramétrique" = {NULL}
       )
     }
   })
+  
+ 
   
   output$r <- renderUI({
     method <- input$method

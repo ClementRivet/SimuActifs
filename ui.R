@@ -7,32 +7,9 @@ ui <- dashboardPagePlus(
 
         enable_rightsidebar = TRUE,
         rightSidebarIcon = "gears",
-<<<<<<< HEAD
-        title = tagList(
-            tags$span(
-                class = "logo-mini", 
-                HTML('<style type="text/css">
-                                .roundedImage{
-                                    overflow:hidden;
-                                    -webkit-border-radius:50px;
-                                    -moz-border-radius:50px;
-                                    border-radius:50px;
-                                    width:100%;
-                                    height:100%;
-                                }
-                             </style>
-                             <div class="roundedImage">
-                               <center><img src="images/mask.png" width="100%"/></center>
-                             </div>')
-            ),
-            tags$span(class = "logo-lg", "Simulation de valeurs d'actifs")
-        ),
 
-        
-
-=======
         title = includeHTML('www/html/logo.html'),
->>>>>>> 11dd15d7b5e7bfd86997c16c3f3fe6272d02b950
+
         titleWidth = "300px"
     ),
     sidebar = dashboardSidebar(
@@ -73,7 +50,7 @@ ui <- dashboardPagePlus(
                 '),
             tags$style('.nav.nav-tabs.nav-justified.control-sidebar-tabs{
                             background: #ff0000;
-                       }'),
+                       }')
         ),
         tabItems(
             tabItem(
@@ -161,8 +138,8 @@ ui <- dashboardPagePlus(
                             choices = c("Monte-Carlo", "Historique", "Paramétrique"),
                             selected = NULL
                         ),
-                        uiOutput("setting"),
-                        br(),
+                        uiOutput("setting2"),
+                        br()
                         # pickerInput(
                         #     inputId = "ml",
                         #     label = h4("Inclure du Machine Learning"), 
@@ -180,11 +157,21 @@ ui <- dashboardPagePlus(
                       box(
                           width = 12,
                           fluidRow(
+                            column(
+                              width = 6,
                               withLoader(
-                                  plotlyOutput('toPlot', height = '500px'),
+                                  plotlyOutput('trainPlot', height = '500px'),
                                   type = "html",
                                   loader = "dnaspin"
                               )
+                            ),
+                            column(
+                              width = 6,
+                              withLoader(
+                                plotlyOutput('testPlot',height = '500px'),
+                                         type="html",
+                                         loader="dnaspin")
+                            )
                           )
                       ),
                       tabBox(
@@ -233,13 +220,9 @@ ui <- dashboardPagePlus(
         rightSidebarTabContent(
             id = 1,
             icon = "desktop",
-            title = "Tab 1",
+            title = "Setting",
             active = TRUE,
-            sliderInput(
-                "obs",
-                "Number of observations:",
-                min = 0, max = 1000, value = 500
-            )
+            uiOutput("setting")
         ),
         rightSidebarTabContent(
             id = 2,
