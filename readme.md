@@ -4,7 +4,7 @@ Voici un rapide dashboard pour ce cours, veuillez installer au préalable les li
 
 ```
 pkg <- c("shinydashboardPlus", "shinydashboard", "plotly", "shinyWidgets", "DT", "shinycustomloader", "rtsdata", "waiter")
-install.package(pkg, dependencies = T)
+install.packages(pkg, dependencies = T)
 ```
 
 Ouvrez le projet via le fichier `SimuActif.Rproj` 
